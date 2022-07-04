@@ -45,3 +45,8 @@ LOAD DATA LOCAL INPATH 'data1.csv' INTO TABLE tbl1;
     >>> Escriba su respuesta a partir de este punto <<<
 */
 
+DROP TABLE IF EXISTS solution;
+CREATE TABLE solution
+AS SELECT YEAR(c4) AS year,(t0) FROM tbl0 LATERAL VIEW explode(c5) tbl0 AS t0;
+
+INSERT OVERWRITE LOCAL DIRECTORY 'output' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' SELECT year,t0,count(t0) FROM solution GROUP BY year,t0;
